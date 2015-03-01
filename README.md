@@ -1,6 +1,5 @@
 # vimeo_video_download
-A Golang app for downloading http://storage.googleapis.com/vimeo-test/work-at-vimeo.mp4.
-
+A Golang app for downloading http://storage.googleapis.com/vimeo-test/work-at-vimeo.mp4 with a variable number of download threads to download the file in range chuncks.
 
   Clone the repo.
 
