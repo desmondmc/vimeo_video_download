@@ -27,7 +27,7 @@ var URL = "http://storage.googleapis.com/vimeo-test/work-at-vimeo.mp4"
 
 var FILE_NAME = "video.mp4"
 
-var messages = make(chan string)
+var downloadChannel = make(chan string)
 
 func main() {
 	parseInput()
@@ -107,7 +107,7 @@ func spinOffRangeDownloadsForFileWithInfo(file *os.File, fileInfo FileInfo) {
 
 	//Wait for all download threads to complete.
 	for i := 0; i < NUMBER_OF_DOWNLOAD_THREADS; i++ {
-		msg := <-messages
+		msg := <-downloadChannel
 		if msg == "error" {
 			fmt.Println("Error Downloading File Chunk. Aborting...")
 			return
@@ -132,7 +132,7 @@ func downloadUrlToFileAtRange(url string, file *os.File, start int64, end int64,
 
 	if err != nil {
 	    // handle error
-	    messages <- "error"
+	    downloadChannel <- "error"
 	    fmt.Println(err)
 	    return;
 	}
@@ -145,7 +145,7 @@ func downloadUrlToFileAtRange(url string, file *os.File, start int64, end int64,
 	}
 
 	if useRange {
-		messages <- "done"
+		downloadChannel <- "done"
 	}	
 }
 
